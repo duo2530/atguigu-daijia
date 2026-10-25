@@ -16,10 +16,10 @@ spring:
             readTimeout: 30000
             loggerLevel: basic
   rabbitmq:
-    host: 139.198.163.91
+    host: 127.0.0.1
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: admin123
     publisher-confirm-type: correlated
     publisher-returns: true
   data:

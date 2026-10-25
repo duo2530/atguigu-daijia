@@ -1,0 +1,4 @@
+# 本地运行产生的临时文件（见 LOCAL-RUN.md）
+/logs/
+/infra/data/
+/infra/artifacts/
