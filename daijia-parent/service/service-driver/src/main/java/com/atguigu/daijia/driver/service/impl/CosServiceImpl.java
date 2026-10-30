@@ -69,12 +69,12 @@ public class CosServiceImpl implements CosService {
         cosClient.shutdown();
 
         //图片审核
-        Boolean imageAuditing = ciService.imageAuditing(uploadPath);
-        if(!imageAuditing) {
-            //删除违规图片
-            cosClient.deleteObject(tencentCloudProperties.getBucketPrivate(),uploadPath);
-            throw new GuiguException(ResultCodeEnum.IMAGE_AUDITION_FAIL);
-        }
+//        Boolean imageAuditing = ciService.imageAuditing(uploadPath);
+//        if(!imageAuditing) {
+//            //删除违规图片
+//            cosClient.deleteObject(tencentCloudProperties.getBucketPrivate(),uploadPath);
+//            throw new GuiguException(ResultCodeEnum.IMAGE_AUDITION_FAIL);
+//        }
 
         //返回vo对象
         CosUploadVo cosUploadVo = new CosUploadVo();
