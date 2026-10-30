@@ -2,3 +2,9 @@
 /logs/
 /infra/data/
 /infra/artifacts/
+# 本地密钥(微信 appid/secret 等),不得提交
+/.env
+
+# wxa-runner / 小程序本地运行日志
+/logs-wxa-*.log
+/.idea/
