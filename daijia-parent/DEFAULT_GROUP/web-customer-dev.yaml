@@ -16,7 +16,7 @@ spring:
             readTimeout: 30000
             loggerLevel: basic
   rabbitmq:
-    host: 127.0.0.1
+    host: ${daijia.rabbitmq.host:127.0.0.1}
     port: 5672
     username: admin
     password: admin123
@@ -24,11 +24,11 @@ spring:
     publisher-returns: true
   data:
     redis:
-      host: localhost
+      host: ${daijia.redis.host:localhost}
       port: 6379
       database: 0
       timeout: 1800000
-      password:
+      password: ${daijia.redis.password:}
       jedis:
         pool:
           max-active: 20 #最大连接数

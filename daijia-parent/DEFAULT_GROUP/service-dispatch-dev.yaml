@@ -20,11 +20,11 @@ spring:
             loggerLevel: basic
   data:
     redis:
-      host: localhost
+      host: ${daijia.redis.host:localhost}
       port: 6379
       database: 0
       timeout: 1800000
-      password:
+      password: ${daijia.redis.password:}
       jedis:
         pool:
           max-active: 20 #最大连接数
@@ -32,7 +32,7 @@ spring:
           max-idle: 5    #最大空闲
           min-idle: 0     #最小空闲
   rabbitmq:
-    host: 127.0.0.1
+    host: ${daijia.rabbitmq.host:127.0.0.1}
     port: 5672
     username: admin
     password: admin123
@@ -41,7 +41,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/daijia_dispatch?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://${daijia.mysql.host:127.0.0.1}:3306/daijia_dispatch?characterEncoding=utf-8&useSSL=false
     username: root
     password: shangguigu@QY123
     hikari:
@@ -59,7 +59,7 @@ xxl:
   job:
     admin:
       # 调度中心部署跟地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册
-      addresses: http://localhost:8080/xxl-job-admin
+      addresses: http://${daijia.xxljob.host:localhost}:8080/xxl-job-admin
       # 执行器通讯TOKEN [选填]：非空时启用
     accessToken: default_token
 

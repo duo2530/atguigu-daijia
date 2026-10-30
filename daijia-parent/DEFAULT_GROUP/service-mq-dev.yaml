@@ -20,11 +20,11 @@ spring:
             loggerLevel: basic
   data:
     redis:
-      host: localhost
+      host: ${daijia.redis.host:localhost}
       port: 6379
       database: 0
       timeout: 1800000
-      password:
+      password: ${daijia.redis.password:}
       jedis:
         pool:
           max-active: 20 #最大连接数
@@ -32,7 +32,7 @@ spring:
           max-idle: 5    #最大空闲
           min-idle: 0     #最小空闲
   rabbitmq:
-    host: 127.0.0.1
+    host: ${daijia.rabbitmq.host:127.0.0.1}
     port: 5672
     username: admin
     password: admin123
