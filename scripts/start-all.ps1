@@ -7,7 +7,7 @@
 # 说明：进程通过 WMI(Win32_Process.Create) 拉起，而不是 Start-Process，
 #       目的是让 java 进程脱离当前 shell/作业对象——关掉终端、杀掉调用方都不会带走服务。
 param(
-    [string]$JdkHome = 'D:\Develop\Java\graalvm-ce-java17-22.3.0',
+    [string]$JdkHome = 'D:\Develop\Java\jdk-17',
     [string[]]$Only  = @(),
     [switch]$SkipDispatch,
     [int]$HeapMb     = 256
@@ -21,6 +21,19 @@ New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $env:JAVA_HOME = $JdkHome
 $java = Join-Path $JdkHome 'bin\java.exe'
 if (-not (Test-Path $java)) { throw "找不到 JDK17: $java" }
+
+# 仅校验根目录 .env（已被 .gitignore 忽略）里有没有填 APP_ID / APP_SECRET，只打印长度，不打印值。
+# 真正把它们传给 java 的是下面的 scripts\load-env.cmd（WMI 拉起的进程不继承本脚本的环境变量）。
+$envFile = Join-Path $root '.env'
+if (Test-Path $envFile) {
+    $kv = @{}
+    Get-Content $envFile -Encoding UTF8 | ForEach-Object {
+        if ($_ -match '^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$') { $kv[$Matches[1]] = $Matches[2].Trim('"').Trim("'") }
+    }
+    Write-Host ("已读取 .env：APP_ID 长度={0}，APP_SECRET 长度={1}" -f "$($kv['APP_ID'])".Length, "$($kv['APP_SECRET'])".Length)
+} else {
+    Write-Host '未找到 .env，小程序登录将不可用（WX_APP_ID/WX_APP_SECRET 为空）' -ForegroundColor Yellow
+}
 
 # 每个模块的堆上限（MB）：按"最小够用"原则分配，合计约 4.0GB
 $heapTable = @{
@@ -63,6 +76,9 @@ if ($Only.Count -eq 1 -and $Only[0] -match ',') { $Only = $Only[0] -split ',' }
 if ($Only.Count -gt 0) { $modules = @($modules | Where-Object { $Only -contains $_.name }) }
 if ($SkipDispatch)     { $modules = @($modules | Where-Object { $_.name -ne 'service-dispatch' }) }
 
+# ShowWindow=0 (SW_HIDE)：cmd 控制台窗口隐藏，避免每个服务弹一个黑框；日志已重定向到 logs\
+$startup = New-CimInstance -ClassName Win32_ProcessStartup -ClientOnly -Property @{ ShowWindow = [uint16]0 }
+
 $started = @()
 foreach ($m in $modules) {
     $jar = Join-Path $parent "$($m.dir)\target\$($m.name).jar"
@@ -85,11 +101,15 @@ foreach ($m in $modules) {
         '-jar', $jar
     ) -join ' '
 
-    # cmd 包裹用于重定向输出；整体通过 WMI 创建，脱离当前作业对象
-    $cmdLine = 'cmd.exe /c ""{0}" {1} >> "{2}" 2>> "{3}""' -f $java, $opts, $log, $err
+    # cmd 包裹用于重定向输出；整体通过 WMI 创建，脱离当前作业对象。
+    # WMI 创建的进程不继承本脚本的环境变量，所以由 load-env.cmd 在 java 启动前读 .env 并设置 WX_APP_ID/WX_APP_SECRET，
+    # 密钥因此不会出现在进程命令行里。
+    $loader = Join-Path $PSScriptRoot 'load-env.cmd'
+    $cmdLine = 'cmd.exe /c "call "{4}" && "{0}" {1} >> "{2}" 2>> "{3}""' -f $java, $opts, $log, $err, $loader
     $r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{
-        CommandLine      = $cmdLine
-        CurrentDirectory = $parent
+        CommandLine             = $cmdLine
+        CurrentDirectory        = $parent
+        ProcessStartupInformation = $startup
     }
     if ($r.ReturnValue -ne 0) {
         Write-Host ("启动失败 {0}: WMI ReturnValue={1}" -f $m.name, $r.ReturnValue) -ForegroundColor Red

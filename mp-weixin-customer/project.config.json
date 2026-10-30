@@ -16,11 +16,22 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "condition": false
+    "condition": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false
   },
   "compileType": "miniprogram",
   "libVersion": "",
-  "appid": "wxcc651fcbab275e33",
+  "appid": "wxd24f388033f4663e",
   "projectname": "designated-driver-minprogram-passenger",
   "condition": {
     "search": {
@@ -85,5 +96,6 @@
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }

@@ -208,3 +208,24 @@ GET  http://127.0.0.1:8600/driver-api/order/findNewOrderQueueData     header: to
 | 中文日志乱码 | 脚本用 PowerShell 5.1 执行时需 UTF-8 **BOM**；仓库 `scripts/*.ps1` 已带 BOM |
 | 内存吃紧 / 容器 OOM | 调小 `start-all.ps1` 的 `$heapTable` 与 compose 的 `mem_limit`；或关闭 `service-mq`/`web-mgr` 等非必需模块（`-Only` 参数） |
 | 想重置数据库 | `docker compose -f infra\docker-compose.yml down -v` 后重新 up（会重跑 daijia.sql 与 xxl 建表脚本） |
+
+
+
+## 快速启动
+
+先执行 docker start 启动容器,然后用 start-all.ps1 启动后端,再启动两个 wxa-runner。启动命令已经记在 daijia-local-run-gotchas.md 里。
+
+在项目根目录 D:\Projects\IDEAProjects\atguigu-daijia 下执行,两个命令分别开一个终端窗口运行,保持窗口打开:
+
+```shell
+npx -y --registry=https://registry.npmjs.org wxa-runner@0.10.1 dev ./mp-weixin-customer --port 3000 --setup ./scripts/wxa/customer.setup.ts --devtools-login
+```
+
+```shell
+npx -y --registry=https://registry.npmjs.org wxa-runner@0.10.1 dev ./mp-weixin-driver --port 3001 --setup ./scripts/wxa/driver.setup.ts --devtools-login
+```
+
+- 乘客端地址:http://localhost:3000
+- 司机端地址:http://localhost:3001
+- 启动前先打开微信开发者工具并确认已登录。日志里提示「开发者工具的登录态已过期」时,就是要在开发者工具里刷新登录态。
+- --registry 参数必须带上。本机默认的 npmmirror 源滞后,会报 ETARGET。
