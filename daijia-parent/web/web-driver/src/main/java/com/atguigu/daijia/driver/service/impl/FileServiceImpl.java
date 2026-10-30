@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
             // 设置存储对象名称
             String extFileName = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
             String fileName = new SimpleDateFormat("yyyyMMdd")
-                    .format(new Date()) + "/" + UUID.randomUUID().toString().replace("-" , "") + "." + extFileName;
+                    .format(new Date()) + "/" + UUID.randomUUID().toString().replace("-" , "")  + extFileName;
 
             PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                     .bucket(minioProperties.getBucketName())
