@@ -18,7 +18,7 @@ import com.atguigu.daijia.payment.config.WxPayV3Properties;
 import com.atguigu.daijia.payment.mapper.PaymentInfoMapper;
 import com.atguigu.daijia.payment.service.WxPayService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.wechat.pay.java.core.RSAAutoCertificateConfig;
+import com.wechat.pay.java.core.RSAPublicKeyConfig;
 import com.wechat.pay.java.core.exception.ServiceException;
 import com.wechat.pay.java.core.notification.NotificationParser;
 import com.wechat.pay.java.core.notification.RequestParam;
@@ -44,7 +44,7 @@ public class WxPayServiceImpl implements WxPayService {
     private PaymentInfoMapper paymentInfoMapper;
 
     @Autowired
-    private RSAAutoCertificateConfig rsaAutoCertificateConfig;
+    private RSAPublicKeyConfig rsaAutoCertificateConfig;
 
     @Autowired
     private WxPayV3Properties wxPayV3Properties;

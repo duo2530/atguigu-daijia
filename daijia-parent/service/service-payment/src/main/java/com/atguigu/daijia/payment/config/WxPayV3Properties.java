@@ -1,6 +1,6 @@
 package com.atguigu.daijia.payment.config;
 
-import com.wechat.pay.java.core.RSAAutoCertificateConfig;
+import com.wechat.pay.java.core.RSAPublicKeyConfig;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,13 +22,20 @@ public class WxPayV3Properties {
     public String apiV3key;
     /** 回调地址 */
     private String notifyUrl;
+    /** 微信支付公钥文件路径 */
+    private String publicKeyPath;
+    /** 微信支付公钥ID(PUB_KEY_ID_ 开头) */
+    private String publicKeyId;
 
+    /** 商户已启用微信支付公钥模式,平台证书接口不可用,改用公钥验签 */
     @Bean
-    public RSAAutoCertificateConfig getConfig(){
-        return new RSAAutoCertificateConfig.Builder()
+    public RSAPublicKeyConfig getConfig(){
+        return new RSAPublicKeyConfig.Builder()
                 .merchantId(this.getMerchantId())
                 .privateKeyFromPath(this.getPrivateKeyPath())
                 .merchantSerialNumber(this.getMerchantSerialNumber())
+                .publicKeyFromPath(this.getPublicKeyPath())
+                .publicKeyId(this.getPublicKeyId())
                 .apiV3Key(this.getApiV3key())
                 .build();
 
