@@ -20,6 +20,7 @@ var __spreadValues = (a, b) => {
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 const common_vendor = require("../../common/vendor.js");
 const utils_storage = require("../../utils/storage.js");
+const config_env = require("../../config/env.js");
 require("../../config/constant.js");
 if (!Array) {
   const _easycom_tm_upload2 = common_vendor.resolveComponent("tm-upload");
@@ -36,7 +37,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   setup(__props, { emit }) {
     const props = __props;
     const upLoadUrl = common_vendor.computed(() => {
-      return "http://localhost:8600/driver-api" + props.suffixUrl;
+      return config_env.baseUrl + props.suffixUrl;
     });
     const header = common_vendor.ref({
       token: utils_storage.getToken()

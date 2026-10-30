@@ -26,6 +26,7 @@ const config_constEnums = require("../../config/constEnums.js");
 const api_order_index = require("../../api/order/index.js");
 const class_RecorderManagerClass = require("../../class/RecorderManagerClass.js");
 const utils_storage = require("../../utils/storage.js");
+const config_env = require("../../config/env.js");
 function formatPolyline(polyline) {
   const coors = polyline;
   const pl = [];
@@ -480,7 +481,7 @@ const useTakeCarInfoStore = common_vendor.defineStore({
               recordCallback: (res) => {
                 console.log("res----", res);
                 common_vendor.wx$1.uploadFile({
-                  url: "http://localhost:8600/driver-api/monitor/upload",
+                  url: config_env.baseUrl + "/monitor/upload",
                   //仅为示例，非真实的接口地址
                   filePath: res.tempFilePath,
                   header: { token: utils_storage.getToken() },

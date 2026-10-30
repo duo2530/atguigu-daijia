@@ -19,6 +19,7 @@ var __spreadValues = (a, b) => {
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 const common_vendor = require("../../common/vendor.js");
+const config_env = require("../../config/env.js");
 if (!Array) {
   const _easycom_tm_upload2 = common_vendor.resolveComponent("tm-upload");
   _easycom_tm_upload2();
@@ -33,7 +34,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   emits: ["update:modelValue"],
   setup(__props, { emit }) {
     const props = __props;
-    const upLoadUrl = common_vendor.ref("http://localhost:8600/driver-api/file/upload");
+    const upLoadUrl = common_vendor.ref(config_env.baseUrl + "/file/upload");
     common_vendor.useAttrs();
     const success = (item, fileList) => {
       console.log("success", item, fileList);

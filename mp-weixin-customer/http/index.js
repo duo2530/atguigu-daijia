@@ -19,10 +19,11 @@ const common_vendor = require("../common/vendor.js");
 const http_type = require("./type.js");
 const utils_storage = require("../utils/storage.js");
 const store_modules_user = require("../store/modules/user.js");
+const config_env = require("../config/env.js");
 const service = new common_vendor.Request();
 service.setConfig((config) => {
   config.timeout = http_type.ResultEnum.TIMEOUT;
-  config.baseURL = "http://localhost:8600/customer-api";
+  config.baseURL = config_env.baseUrl;
   return config;
 });
 service.interceptors.request.use(
