@@ -261,6 +261,7 @@ public class LocationServiceImpl implements LocationService {
         }
 
         //3 返回最终计算实际距离
-        return new BigDecimal(realDistance);
+        //getDistance 返回米,计费规则按公里计算,这里换算成公里
+        return new BigDecimal(realDistance).divide(new BigDecimal(1000), 2, java.math.RoundingMode.HALF_UP);
     }
 }
