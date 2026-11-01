@@ -94,6 +94,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         takeCarInfo.$reset();
         return;
       }
+      if (!location.address || typeof location.address !== "string") {
+        location.address = Array.isArray(location.address) ? location.address.join("") || location.name : location.name;
+      }
       if (flag.value === "from") {
         takeCarInfo.from = location;
       } else {

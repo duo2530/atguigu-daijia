@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -X utf8 .claude/skills/mp-lan-ip-sync/scripts/sync-lan-ip.py --check --quiet",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
