@@ -21,11 +21,11 @@ wx:
     notifyUrl: http://127.0.0.1:8600/payment/wxPay/notify
 tencent:
   cloud:
-    secretId: AKIDxjGYcR0KPFqBH8j6E7***
-    secretKey: KPFsGPJyNWQ5WheNq55qMcdOuA***
-    region: ap-beijing
-    bucketPrivate: daijia-private-1307503602
-    persionGroupId: 1
+    secretId: ${TENCENT_CLOUD_SECRET_ID:}
+    secretKey: ${TENCENT_CLOUD_SECRET_KEY:}
+    region: ${TENCENT_CLOUD_REGION:ap-shanghai}
+    bucketPrivate: ${TENCENT_COS_BUCKET:daijia-private-1454553306}
+    persionGroupId: ${TENCENT_IAI_GROUP_ID:daijia-driver}
   map:
     key: 7EBBZ-LSDLG-6ZOQO-QUMXU-MWWO5-FKBYD
 minio:

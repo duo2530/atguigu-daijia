@@ -12,5 +12,7 @@ for /f "usebackq eol=# tokens=1,* delims==" %%A in ("%ENVFILE%") do (
   if /i "%%A"=="WX_PAY_PRIVATE_KEY_PATH" set "WX_PAY_PRIVATE_KEY_PATH=%%B"
   if /i "%%A"=="WX_PAY_PUBLIC_KEY_PATH" set "WX_PAY_PUBLIC_KEY_PATH=%%B"
   if /i "%%A"=="WX_PAY_PUBLIC_KEY_ID" set "WX_PAY_PUBLIC_KEY_ID=%%B"
+  if /i "%%A"=="TENCENT_CLOUD_SECRET_ID" set "TENCENT_CLOUD_SECRET_ID=%%B"
+  if /i "%%A"=="TENCENT_CLOUD_SECRET_KEY" set "TENCENT_CLOUD_SECRET_KEY=%%B"
 )
 exit /b 0
