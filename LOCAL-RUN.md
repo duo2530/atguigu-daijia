@@ -45,7 +45,7 @@ docker compose -f infra\docker-compose.yml up -d
 docker compose -f infra\docker-compose.yml ps        # 等 6 个都 healthy
 
 # 2) 把 infra\..\daijia-parent\DEFAULT_GROUP 里的 15 个配置推送到本地 Nacos
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\nacos-import.ps1
+python -X utf8 .claude/skills/daijia-cloud-deploy/scripts/daijia.py nacos-push --host 127.0.0.1
 
 # 3) 导入本地测试数据（1 个乘客 + 1 个司机 + 司机设置/账户）
 Get-Content scripts\test-data.sql -Raw | docker exec -i daijia-mysql mysql -uroot -p'shangguigu@QY123'
@@ -139,7 +139,7 @@ docker compose -f infra\docker-compose.yml stop      # 保留数据；要清库�
 
 ### 5.3 新增目录
 - `infra/`：`docker-compose.yml`、README、`artifacts/xxl-job-admin.jar`（见 5.4）、`scripts/verify.ps1` 等
-- `scripts/`：`nacos-import.ps1`、`start-all.ps1`、`stop-all.ps1`、`smoke-test.ps1`、`test-data.sql`
+- `scripts/`：`start-all.ps1`、`stop-all.ps1`、`smoke-test.ps1`、`test-data.sql`
 - `logs/`：运行日志（已加入根 `.gitignore`）
 
 回滚配置：`git checkout -- daijia-parent`（恢复到课程原始远程地址）。
@@ -200,7 +200,7 @@ GET  http://127.0.0.1:8600/driver-api/order/findNewOrderQueueData     header: to
 
 | 现象 | 原因/处理 |
 |---|---|
-| 启动即报 `Could not resolve placeholder` / 连不上 Nacos | 没导入配置或 Nacos 未就绪；重跑 `scripts\nacos-import.ps1` |
+| 启动即报 `Could not resolve placeholder` / 连不上 Nacos | 没导入配置或 Nacos 未就绪；重跑 `daijia.py nacos-push --host 127.0.0.1` |
 | 接口返回 `code=208 未登陆` | 请求头没有 `token` 或 Redis 里没有 `user:login:<token>` |
 | 接口返回 `code=201 失败` 且 err 日志有 `ClassCastException: Integer cannot be cast to String` | Redis 里 token 的值写成了 `1`，必须是 `"1"`（JSON 字符串） |
 | 下单成功但司机收不到订单 | ①司机没上报位置（Redis GEO 为空）→ 派单搜不到人；②xxl admin 版本不对（见 5.4）；③`driver_set.accept_distance` 太小 |

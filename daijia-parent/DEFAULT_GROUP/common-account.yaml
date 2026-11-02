@@ -18,7 +18,7 @@ wx:
     #微信支付公钥ID(PUB_KEY_ID_ 开头)
     publicKeyId: ${WX_PAY_PUBLIC_KEY_ID:}
     #异步回调地址
-    notifyUrl: http://127.0.0.1:8600/payment/wxPay/notify
+    notifyUrl: ${WX_PAY_NOTIFY_URL:http://127.0.0.1:8600/payment/wxPay/notify}
 tencent:
   cloud:
     secretId: ${TENCENT_CLOUD_SECRET_ID:}
@@ -28,8 +28,3 @@ tencent:
     persionGroupId: ${TENCENT_IAI_GROUP_ID:daijia-driver}
   map:
     key: 7EBBZ-LSDLG-6ZOQO-QUMXU-MWWO5-FKBYD
-minio:
-  endpointUrl: http://127.0.0.1:9000
-  accessKey: admin
-  secreKey: admin123456
-  bucketName: sph

@@ -9,6 +9,7 @@
 /logs-wxa-*.log
 /.idea/
 
-# SAE 部署产物(由 deploy/sae/build_seed.py 生成)
-/deploy/sae/.generated/
+# SAE 部署产物(由 .claude/skills/daijia-cloud-deploy/scripts/daijia.py 生成)
+/.claude/skills/daijia-cloud-deploy/.generated/
+__pycache__/
 /daijia-parent/**/src/main/resources/bootstrap-dev.properties

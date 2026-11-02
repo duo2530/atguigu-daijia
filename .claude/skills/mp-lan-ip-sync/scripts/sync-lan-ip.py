@@ -74,6 +74,13 @@ def main():
             print("没检测到可用的局域网 IP(没连 Wi-Fi/网线?),可用 --ip 手工指定")
         return 0
     stale = [(p, current(p)) for p in TARGETS if p.exists() and current(p) != ip]
+    cloud = [(p, h) for p, h in stale if h and not ipaddress.ip_address(h).is_private] if all(
+        re.fullmatch(r"[\d.]+", h or "") for _, h in stale) else []
+    if a.check and cloud:
+        # daijia-cloud-deploy 把地址切到了云上 CLB(给业务人员扫预览码用),这是预期状态,不报不一致
+        if not a.quiet or len(cloud) == len(stale):
+            print(f"小程序当前指向云上后端 {cloud[0][1]}(daijia-cloud-power down 后会改回本机局域网 IP)。")
+        return 0
     if a.check:
         if stale:
             print(f"小程序真机调试地址与本机当前 IP 不一致:本机 {ip}({nic}),"
